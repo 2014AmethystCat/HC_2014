@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>获取li中span的title值</title>
+    <style type="text/css">
+        * {margin: 0;padding: 0;}
+        ul {list-style: none;}
+        .container {
+            background: seagreen;
+            width: 500px;
+            height: 300px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <ul id="oul">
+        <li><span title="嘎嘎">aaaaaa</span></li>
+        <li><span title="哈哈">vvvvvvv</span></li>
+        <li><span title="呼呼">cccccc</span></li>
+        <li><span title="咯咯">aaaaaa</span></li>
+    </ul>
+</div>
+</body>
+<script>
+    window.onload = function () {
+        var oUl = document.getElementById("oul");
+        var oli = oUl.getElementsByTagName("span");
+        for(var i = 0,max = oli.length;i < max;i++) {
+            oli[i].onclick = function () {
+                alert(this.title);
+            };
+        }
+    };
+</script>
+</html>

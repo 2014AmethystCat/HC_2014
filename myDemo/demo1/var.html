@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>var 散布的问题</title>
+</head>
+<body>
+<button id="cc">点我</button>
+</body>
+<script>
+    window.onload = function () {
+        var btn = document.getElementById("cc");
+        var myname = "global";
+        btn.onclick = function () {
+            alert(myname);
+            var myname = "lucy";
+            alert(myname);
+        };
+    };
+
+</script>
+</html>

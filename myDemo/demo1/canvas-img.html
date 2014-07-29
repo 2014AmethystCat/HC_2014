@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>canvas 添加图片</title>
+    <style type="text/css">
+        canvas {
+            background: seagreen;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="1300" height="600">
+    your browser doesn't surpport canvas.
+</canvas>
+<script>
+
+    var ctx = document.getElementById("canvas").getContext("2d");
+    var img1 = new Image();
+    img1.src = "img/ss.jpg";
+    img1.onload = function() {//图片加载完后再调用drawImage方法进行绘制
+        ctx.drawImage(img1,10,10,500,400);
+    };
+    var img2 = new Image();
+    img2.onload = function() {
+        ctx.drawImage(img2,520,10,500,400);
+    };
+    img2.src = "img/aa.jpg";
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>柱状图1</title>
+    <style type="text/css">
+        #container {
+            margin: 0 auto;
+            background: seagreen;
+        }
+    </style>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/highcharts.js"></script>
+    <script src="js/themes/dark-green.js"></script>
+
+</head>
+<body>
+    <div id="container" style="width: 900px;height: 400px"></div>
+</body>
+<script>
+    var scroeJson = {
+        title:"Monthly Average Rainfall",
+        subtitle:"Source: WorldClimate.com",
+        categories: ['Jan','Feb','Mar','Apr', 'May','Jun','Jul', 'Aug', 'Sep','Oct','Nov','Dec']
+    };
+    $(function () {
+        $("#container").highcharts({
+            chart:{
+                type:'column'
+            },
+            title:{//主标题：学院
+                text:scroeJson.title
+            },
+            subtitle:{//副标题：专业和班级
+                text:scroeJson.subtitle
+            },
+            xAxis:{//x轴数据
+                categories:scroeJson.categories
+            },
+            yAxis:{
+                min:0,
+                title:{
+                    text:'成绩(分)'
+                }
+            },
+            tooltip: {
+                headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                        '<td style="padding:0"><b>{point.y} mm</b></td></tr>',
+                footerFormat: '</table>',
+                shared: true,
+                useHTML: true
+            },
+
+            plotOptions:{
+                column:{
+                    pointPadding:0.1,
+                    borderWidth:0
+                }
+            },
+            series:[{
+                name:'Tokyo',
+                data:[49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+                dataLabels:{
+                    enabled:true,
+                    rotation:-45,//负值表示逆时针方向旋转
+                    color:'#ffffff',
+                    align:'center',
+                    y:-20,
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            },{
+                name:'New York',
+                data: [83.6, 78.8, 98.5, 93.4, 106.0, 84.5, 105.0, 104.3, 91.2, 83.5, 106.6, 92.3],
+                dataLabels:{
+                    enabled:true,
+                    rotation:-45,//负值表示逆时针方向旋转
+                    color:'#ffffff',
+                    align:'left',
+                    x:5,
+                    style: {
+                        fontSize: '13px',
+                        fontFamily: 'Verdana, sans-serif',
+                        textShadow: '0 0 3px black'
+                    }
+                }
+            }],
+            credits:{
+                enable:true,
+                text:'huanghcun',
+                position:{
+                    align:'right',
+                    verticalAlign:'bottom',
+                    x:-10
+                },
+                style:{
+                    fontSize:'18px',
+                    color:'#fff'
+                }
+            },
+            legend:{
+                layout:'vertical',
+                align:'right',
+                verticalAlign:'middle',
+                borderWidth:0
+            }
+        });
+
+        addLine();//增加标识线，这里我定义为平均分
+    });
+
+    function addLine() {
+        var chart = $('#container').highcharts(),
+            aver = [{"chengji":"综合成绩平均分","fen":151},{"chengji":"文化成绩平均分","fen":203}];//用一个数组保存平均成绩
+        for (var i=0;i<2;i++) {
+            chart.yAxis[0].addPlotLine({             //在x轴上增加
+                value:aver[i].fen,                       //在值为2的地方
+                width:1,                             //标示线的宽度为2px
+                color: '#f00',                       //标示线的颜色
+                id: 'p'+i ,               //标示线的id，在删除该标示线的时候需要该id标示
+                label:{text:aver[i].chengji,align:'left',style:{color:'red'}}
+            });
+        }
+
+    }
+</script>
+</html>

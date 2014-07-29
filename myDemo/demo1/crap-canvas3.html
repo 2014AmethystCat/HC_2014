@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>掷骰子</title>
+    <style type="text/css">
+        canvas {
+            float: left;
+            border: 2px #ff0000 solid;
+            background: seagreen;
+            margin-left: 200px;
+        }
+        form {
+            float: left;
+            text-align: center;
+        }
+        label {
+            display: inline-block;
+            width: 100px;
+            text-align: right;
+            padding-right: 10px;
+        }
+        p {
+            width: 300px;
+            padding-left: 50px;
+            word-break: break-all;
+        }
+        p::first-letter {
+            font-size: 32px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="500" height="300">
+    your browser doesn't support html5.
+</canvas>
+<form action="" name="f" id="f">
+    <label for="">投掷轮数:</label> <input name="stage" value="" type="text"/><br><br>
+    <label for="">点数:</label><input name="pv" value="" type="text"/><span id="prv"></span><br><br>
+    <label for="">结果:</label><input name="outcome" value="" type="text"/><br><br>
+    <input onclick="throwdice();" type="button" value="投骰子"/><br><br>
+
+    <p>规则:点击按钮投掷骰子，如果第一次投掷两个骰子点数的和等于7或者11，则游戏胜利，游戏结束；
+       如果第一次投出的和等于2,3,或者12，则游戏失败，游戏结束；如果第一次投出的和等于4,5,6,8,9或10，
+        则点击按钮进行第二轮投掷，如果第二次投出的和等于7，游戏失败，如果投出的和等于前一次投出的和，ze游戏胜利，譬如前一次投出的点数和
+        等于8，第二次投出的点数和也为8，则游戏胜利。
+    </p>
+</form>
+</body>
+<script>
+    //定义全局变量
+    var ctx,
+        cW = 500,
+        cH = 300,
+        diceX = 20,
+        diceY = 20,
+        diceW = 100,
+        diceH = 100,
+        dotrad = 6,
+        firstturn = true,//
+        point,//
+        dX,dY;
+    function throwdice () {
+        var sum = 0,
+            ch = 1 + Math.floor(Math.random()*6);
+        dX = diceX;
+        dY = diceY;
+        sum = ch;
+        drowdice(ch);
+        ch = 1 + Math.floor(Math.random()*6);
+        dX = diceX + 150;
+        sum+=ch;
+        drowdice(ch);
+
+        if (firstturn) {
+            switch (sum) {
+                case 7:
+                case 11:
+                    message(1,sum);
+                    break;
+                case 2:
+                case 3:
+                case 12:
+                    message(2,sum);
+                    break;
+                default :
+                    message(3,sum);
+                    point = sum;
+                    firstturn = false;
+            }
+        }else {
+            document.f.outcome.style.color = "#ff"+Math.floor(Math.random()*9)+"000";
+            switch (sum) {
+                case point:
+                    message(4,sum);
+                    firstturn = true;
+                        setTimeout(function() {
+                           message(6)
+                        },3000);
+                    break;
+                case 7:
+                    message(5,sum);
+                    firstturn = true;
+                    setTimeout(function() {
+                        message(6);
+                    },3000);
+                    break;
+                default :
+                    document.f.stage.value = "第二轮";
+                    document.f.pv.value = sum;
+            }
+        }
+    }
+    //骰子绘制
+    function drowdice(n) {
+        ctx = document.getElementById("canvas").getContext("2d");
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 5;
+        ctx.clearRect(dX,dY,diceW,diceH);
+        ctx.strokeRect(dX,dY,diceW,diceH);
+        switch (n) {
+            case 1:
+                drow1();
+                break;
+            case 2:
+                drow2();
+                break;
+            case 3:
+                drow2();
+                drow1();
+                break;
+            case 4:
+                drow4();
+                break;
+            case 5:
+                drow4();
+                drow1();
+                break;
+            case 6:
+                drow4();
+                drow2mid();
+                break;
+        }
+    }
+    //骰点绘制函数
+    function drowdot(x,y) {
+       ctx.beginPath();
+       ctx.fillStyle = "#fff";
+       ctx.arc(x,y,dotrad,0,Math.PI*2,false);
+       ctx.fill();
+       ctx.closePath();
+    }
+    //模式1
+    function drow1() {
+        var dotX = dX + 0.5*diceW,
+            dotY = dY + 0.5*diceH;
+        drowdot(dotX,dotY);
+    }
+    //模式2
+    function drow2() {
+        var dotX = dX + 3*dotrad,
+            dotY = dY + 3*dotrad;
+        console.log(dotX+","+dotY);
+        drowdot(dotX,dotY);
+            dotX = dX + diceW - 3*dotrad;
+            dotY = dY + diceH - 3*dotrad;
+        drowdot(dotX,dotY);
+    }
+    //模式4
+    function drow4() {
+        drow2();
+        var dotX = dX + diceW - 3*dotrad,
+            dotY = dY + 3*dotrad;
+        drowdot(dotX,dotY);
+        var dotX = dX + 3*dotrad,
+            dotY = dY + diceH - 3*dotrad;
+        drowdot(dotX,dotY);
+    }
+    //模式6调用
+    function drow2mid() {
+        var dotX = dX + 3*dotrad,
+            dotY = dY + 0.5*diceH;
+        drowdot(dotX,dotY);
+            dotX = dX + diceW - 3*dotrad;
+            dotY = dY + 0.5*diceH;
+        drowdot(dotX,dotY);
+    }
+    //提示信息
+    function message(n,sum) {
+        switch (n) {
+            case 1:
+                document.f.outcome.value = "first blood，第一次就赢了！！游戏结束";
+                document.f.pv.value = sum;
+                document.f.stage.value = "第一轮";
+                break;
+            case 2:
+                document.f.outcome.value = "你输了,再接再厉";
+                document.f.pv.value = sum;
+                document.f.stage.value = "第一轮";
+                break;
+            case 3:
+                document.f.outcome.value = "请再投一次";
+                document.f.stage.value = "进入第二轮";
+                document.f.pv.value = sum;
+                break;
+            case 4:
+                document.f.outcome.value = "你赢了！3秒后游戏重置";
+                document.f.pv.value = sum;
+                document.f.stage.value = "第二轮";
+                break;
+            case 5:
+                document.f.outcome.value = "game over!3秒后游戏重置";
+                document.f.pv.value = sum;
+                document.f.stage.value = "第二轮";
+                break;
+            case 6:
+                document.f.stage.value = " ";
+                document.f.pv.value = " ";
+                document.f.outcome.value = " ";
+                break;
+        }
+    }
+</script>
+</html>

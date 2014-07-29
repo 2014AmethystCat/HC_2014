@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>删除 数组中特定的元素</title>
+</head>
+<body>
+</body>
+<script type="text/javascript">
+function init () {
+	if (document.body){
+		document.body.innerHTML = "";
+	}
+	var bodyDom = "<div style='width:500px;height:200px;background:#ccc;text-align:center;'>"+
+	"<button name='b' onclick=\"del(this.name);\">删除b</button>"+"</div>"
+	document.body.innerHTML = bodyDom;
+	//传值要传字符串，没有字符串，要构造一个字符串，不能直接del(b)；这里的b在解析 时是undefined
+}
+function del (v) {
+	//最好做一次类型转换
+	var val = String(v);
+	//*：字符串数组中的元素都要打引号来声明其为字符串，不能直接[a,b,c,d]
+	var arr = ["a","b","c","d","e"];
+	var index = arr.indexOf(val);
+	arr.splice(index,1);
+	alert(arr);
+}
+init();
+</script>
+</html>

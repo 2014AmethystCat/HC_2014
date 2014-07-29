@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>closure</title>
+</head>
+<body>
+<button onclick="clo1();">dian wo clo1</button>
+<button onclick="clo2();">dian wo clo2</button>
+<button onclick="clo3();">dian wo clo3</button>
+</body>
+<script>
+    function clo1() {
+        var result = [];
+        for (var i = 0 ; i < 5 ; i++) {
+            result[i] = function () {
+                return i;
+            };
+        }
+        console.log(result);
+        return result;
+    }
+
+    function clo2() {
+        var result = [];
+        for (var i = 0 ; i < 5 ; i++) {
+            result[i] = function (num) {
+                return function () {
+                    return num;
+                };
+            }(i);
+        }
+        console.log(result);
+        return result;
+    }
+
+    function clo3() {
+        var name = "the window";
+        var obj = {
+            name : "the obj",
+            getName : function () {
+                return function () {
+                    return this.name;
+                };
+            }
+        };
+        console.log(obj);
+        alert(obj.getName()());
+    }
+
+    function o(name){
+        this.name = name;
+    }
+
+    function detail(n) {
+        o.call(this,n);
+        this.getThis = function () {
+            alert(this);
+        };
+    }
+
+    var na = new detail("rose");
+    alert(na.name);
+    na.getThis();
+</script>
+</html>

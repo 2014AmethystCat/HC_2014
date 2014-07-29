@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>两个弹跳小球</title>
+    <style type="text/css">
+        form {
+            width: 300px;
+            margin: 20px;
+            padding: 20px;
+            background: seagreen;
+        }
+        input[type="number"]:valid {
+            background: green;
+        }
+        input[type="number"]:invalid {background: #ff0000;}
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="500" height="300">your browser doesn't support canvas.</canvas>
+<br/>
+
+<form name="f" id="f" onSubmit="return change();">
+    Horizontal velocity :<input type="number" value="2" name="hv" min="-32" max="32"/><br/>
+    Vertical   velocity :<input type="number" value="3" name="vv" min="-32" max="32"/><br/>
+    <input type="submit" value="CHANGE"/>
+</form>
+</body>
+<script>
+    var boxx = 10,
+        boxy = 10,
+        boxw = 350,
+        boxh = 250,
+        ballrad = 16,
+        lboxboundx = boxx + ballrad + 16,
+        rboxboundx = boxx + boxw - ballrad - 16,
+        tboxboundy = boxy + ballrad + 16,
+        bboxboundy = boxy + boxh - ballrad - 16,
+        ball1x = 50,//球1x坐标
+        ball2x = 200,//球2y坐标
+        ball1y = 60,//球1y坐标
+        ball2y = 60,//球2y坐标
+        ballvx = 4,
+        ballvy = 8,
+        ballvx2 = 1,
+        ballvy2 = 2,
+        ctx,
+        grad,
+        color,
+        hue = [
+            [255,0,0],
+            [0,255,0],
+            [0,0,255],
+            [255,0,255],
+            [0,255,255],
+            [255,255,0]
+        ];
+    var img = new Image();
+    img.src = "img/ball.png";
+
+    function addLoadEvent(func) {
+        var oldLoad = window.onload;
+        if (typeof oldLoad != "function") {
+            window.onload = func();
+        }else {
+            oldLoad();
+            func();
+        }
+    }
+
+    function init() {
+        ctx = document.getElementById("canvas").getContext("2d");
+        ctx.lineWidth = ballrad;
+        //设置梯度
+        grad = ctx.createLinearGradient(boxx,boxy,boxx+boxw,boxy+boxh);
+        for (var i = 0,max = hue.length;i<max;i++) {
+            color = "rgb("+hue[i][0]+","+hue[i][1]+","+hue[i][2]+")";
+            grad.addColorStop(i*1/6,color);
+        }
+        ctx.fillStyle = grad;
+        moveball();//移动，检测和显示球
+        setInterval(moveball,20);
+    }
+
+    function moveball() {
+        ctx.clearRect(boxx,boxy,boxw,boxh);
+        moveandcheck();//获取小球的最新坐标
+        ctx.drawImage(img,ball1x - ballrad,ball1y - ballrad,2*ballrad,2*ballrad);//球1
+        ctx.drawImage(img,ball2x - ballrad,ball2y - ballrad,2*ballrad,2*ballrad);//球2
+        ctx.fillRect(boxx,boxy,ballrad,boxh);//左边界
+        ctx.fillRect(boxx,boxy,boxw,ballrad);//上边界
+        ctx.fillRect(boxx+boxw-ballrad,boxy,ballrad,boxh);//右边界
+        ctx.fillRect(boxx,boxy+boxh-ballrad,boxw,ballrad);//下边界
+
+    }
+
+    function moveandcheck() {
+
+        ballcheck (1,ball1x,ball1y);
+        ballcheck (2,ball2x,ball2y);
+        console.log(ball1x+"-----"+ball1y);
+        console.log(ball2x+"-----"+ball2y);
+    }
+
+    function ballcheck(type,ox,oy) {
+        if (type == 1) {
+            var nx = ox + ballvx,
+                ny = oy + ballvy;
+            if (nx > rboxboundx) {
+                nx = rboxboundx;
+                ballvx = -ballvx;
+            }
+            if (nx < lboxboundx) {
+                nx = lboxboundx;
+                ballvx = -ballvx;
+            }
+            if (ny < tboxboundy) {
+                ny = tboxboundy;
+                ballvy = -ballvy;
+            }
+            if (ny > bboxboundy) {
+                ny = bboxboundy;
+                ballvy = -ballvy;
+            }
+            //得出小球运动改变后的坐标。
+            console.log(nx);
+            console.log(ny);
+            ball1x = nx;
+            ball1y = ny;
+        }
+        if (type == 2) {
+            var nx2 = ox + ballvx2,
+                ny2 = oy + ballvy2;
+            if (nx2 > rboxboundx) {
+                nx2 = rboxboundx;
+                ballvx2 = -ballvx2;
+            }
+            if (nx2 < lboxboundx) {
+                nx2 = lboxboundx;
+                ballvx2 = -ballvx2;
+            }
+            if (ny2 < tboxboundy) {
+                ny2 = tboxboundy;
+                ballvy2 = -ballvy2;
+            }
+            if (ny2 > bboxboundy) {
+                ny2 = bboxboundy;
+                ballvy2 = -ballvy2;
+            }
+            //得出小球运动改变后的坐标。
+            console.log(nx);
+            console.log(ny);
+            ball2x = nx2;
+            ball2y = ny2;
+        }
+
+
+    }
+
+    function change() {
+        ballvx = Number(document.f.hv.value);
+        ballvy = Number(document.f.vv.value);
+        return false;
+    }
+
+    addLoadEvent(init);
+</script>
+</html>

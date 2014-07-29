@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>弹跳球1</title>
+    <style type="text/css">
+        form {
+            margin: 20px;
+            padding: 20px;
+            width: 330px;
+            background: brown;
+        }
+        pre {
+            display: inline-block;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="400" height="300">
+    your browser doesn't support canvas.
+</canvas>
+<br/>
+<form id="f" name="f" onSubmit="return change();">
+<pre>Horizontal velocity :</pre><input type="number" name="hv" id="hv" value="4" min="-10" max="10"/><br/>
+<pre>Vertical   velocity :</pre><input type="number" name="vv" id="vv" value="8" min="-10" max="10"/><br/>
+    <input type="submit" value="CHANGE"/>
+</form>
+</body>
+<script type="text/javascript">
+    //定义全局变量
+    var boxx = 20,
+        boxy = 30,
+        boxw = 350,
+        boxh = 250,
+        ballrad = 10,
+        rboxboundx = boxx + boxw - ballrad,
+        bboxboundy = boxy + boxh - ballrad,
+        lboxboundx = boxx + ballrad,
+        tboxboundy = boxy + ballrad,
+        ballx = 50,
+        bally = 60,
+        ctx ,
+        ballvx = -6,
+        ballvy = -5;
+
+    function addLoadEvent(func) {
+        var oldLoadfunc = window.onload;
+        if (typeof oldLoadfunc != "function") {
+            window.onload = func();
+        }else {
+            oldLoadfunc();
+            func();
+        }
+    }
+
+    function init() {
+       ctx = document.getElementById("canvas").getContext("2d");
+       ctx.lineWidth = ballrad;
+       moveball();//第一次调用moveball用来移动，检查，和用来显示球
+       setInterval(moveball,20);
+
+    }
+
+    function moveball() {
+        ctx.clearRect(boxx,boxy,boxw,boxh);//清空盒子也包括球
+        moveandcheck();//检测碰撞，并最终得出球的坐标，以便重新绘制小球
+
+        ctx.beginPath();
+        ctx.fillStyle = "red";
+        ctx.arc(ballx,bally,ballrad,0,Math.PI*2,true);
+        ctx.fill();
+
+        ctx.strokeRect(boxx,boxy,boxw,boxh);
+    }
+
+    function moveandcheck() {//球的新位置等于球的起始位置加上球的位移量
+        var nballx = ballx + ballvx,
+            nbally = bally + ballvy;
+        if (nballx > rboxboundx) {
+            nballx = rboxboundx;
+            ballvx = -ballvx;
+        }
+        if (nballx < lboxboundx) {
+            nballx = lboxboundx;
+            ballvx = -ballvx;
+        }
+        if (nbally < tboxboundy) {
+            nbally = tboxboundy;
+            ballvy = -ballvy;
+        }
+        if (nbally > bboxboundy) {
+            nbally = bboxboundy;
+            ballvy = -ballvy;
+        }
+        //得出小球运动改变后的坐标。
+        ballx = nballx;
+        bally = nbally;
+    }
+
+    function change() {//*:如果不转换成Number类型,表单输入的值将作为字符串赋值给ballvx,ballvy，控制台显示的坐标将是错的，务必注意
+        ballvx = Number(document.f.hv.value);
+        ballvy = Number(document.f.vv.value);
+        console.log(ballx+"-----"+bally);
+        return false;//阻止onsubmit默认刷新页面
+    }
+
+    addLoadEvent(init);
+
+</script>
+</html>

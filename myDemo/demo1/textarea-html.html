@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>textarea包含html</title>
+    <style type="text/css">
+    	textarea {
+    		background-color: grey;
+    		width: 800px;
+    		overflow-y:visible;
+    	}
+    </style>
+</head>
+<body>
+	<div class="container">
+		<textarea>
+<div id="mask_id"></div>
+<div class="pjf_content">
+	<div class="pjf_ul_title_box">
+		<h3 class="pjf_ul_title">最新审批意见</h3>
+	</div>
+	<form id="NewApproveSug">
+		<div class="div_ulbox" id="d1">
+			<ul class="pjf_ul_two">
+				<li><label class="pjf_label">审批人：</label>
+					<input id="Txn_Stff_ID" name="Txn_Stff_ID" type="text" />
+				</li>
+				<li><label class="pjf_label">所在部门：</label>
+					<input id="Txn_InsID" name="Txn_InsID" type="text" />
+				</li>
+				<li><label class="pjf_label">审批结果:</label>
+					<label id="OPIN_CODE" style="margin-left: 20px"></label>
+				</li>
+				<li><label class="pjf_label">审批时间：</label>
+					<input id="Txn_Tm" name="Txn_Tm" type="text" />
+				</li>
+				<li><label class="pjf_label">审批意见：</label>
+				&lt;textarea id="OPIN_DSC" name="OPIN_DSC"&gt;&lt;/textarea&gt;</li>
+			</ul>
+		</div>
+	</form>
+</div>
+<div id="pjf_content">
+	<div class="pjf_submit_con">
+		<span id="btnSave"></span>
+		<span id="btnClose"></span>		
+	</div>
+</div>	
+		</textarea>
+	</div>
+</body>
+</html>

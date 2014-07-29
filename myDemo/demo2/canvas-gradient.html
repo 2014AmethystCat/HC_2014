@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>canvas渐变</title>
+</head>
+<body>
+<canvas id="canvas" width="400" height="300">your browser doesn't support canvas.</canvas>
+</body>
+<script>
+    var ctx = document.getElementById("canvas").getContext("2d");
+    var grad = ctx.createLinearGradient(0,3,400,200);
+    grad.addColorStop(.2,"rgba(255,0,0,.3)");
+    grad.addColorStop(.5,"rgba(0,255,0,.6)");
+    grad.addColorStop(1,"rgba(0,0,255,.9)");
+    ctx.fillStyle = grad;
+    ctx.fillRect(10,10,300,200);
+    ctx.lineWidth = 10;
+    ctx.strokeRect(10,10,300,200);
+</script>
+</html>

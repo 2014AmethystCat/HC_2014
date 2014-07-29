@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="js/jquery.min.js"></script>
+    <style type="text/css">
+        .keyWrapper-hc {
+            position: absolute;
+/*
+            width: 400px;
+            height: 250px;
+*/
+            width: 450px;
+            height: 280px;
+            background: url("images/key_bg2.png") no-repeat center;
+            overflow: hidden;
+        }
+        .keyWrapper-hc span {
+            /*background: red;*/
+            /*opacity: 0.5;*/
+            display: block;
+            float: left;
+            width: 142px;
+            height: 62px;
+            margin-top: 3px;
+            margin-left: 3px;
+            text-indent: -9999px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        /*.keyWrapper-hc span:hover {*/
+            /*background: deepskyblue;*/
+            /*opacity: 0.8;*/
+        /*}*/
+        span.mt12 {
+            margin-top: 13px;
+        }
+        span.ml9 {
+            margin-left: 9px;
+        }
+        .s1:hover {background: url("images/1-p.png") no-repeat center;}
+        .s2:hover {background: url("images/2-p.png") no-repeat center;}
+        .s3:hover {background: url("images/3-p.png") no-repeat center;}
+        .s4:hover {background: url("images/4-p.png") no-repeat center;}
+        .s5:hover {background: url("images/5-p.png") no-repeat center;}
+        .s6:hover {background: url("images/6-p.png") no-repeat center;}
+        .s7:hover {background: url("images/7-p.png") no-repeat center;}
+        .s8:hover {background: url("images/8-p.png") no-repeat center;}
+        .s9:hover {background: url("images/9-p.png") no-repeat center;}
+        .s10:hover {background: url("images/line-p.png") no-repeat center;}
+        .s0:hover {background: url("images/0-p.png") no-repeat center;}
+        /*.s11:hover {background: url("images/0-p.png") no-repeat center;}*/
+    </style>
+</head>
+<body>
+<div class="container">
+    <br>
+    <input type="text" name="数字输入框" id="num" placeholder="请输入填单编号"/>
+</div>
+</body>
+<script type="text/javascript">
+$(function(){
+    var keyboard = new Keyboard({dom:"num"});
+});
+var Keyboard = function (conf) {
+    this.valArr = [];
+    this.param = conf;
+    //将id转化为jquery能识别的#id方式
+    if (conf && conf.constructor == String ) {
+        this.dom = $("#"+conf);
+    }
+    if (conf && conf.dom.constructor == String) {
+        this.dom = $("#"+conf.dom);
+    }
+    this.init(conf);
+}
+
+Keyboard.prototype = {
+    init:function(conf){
+        var me = this;
+        if (this.validateParam(conf)) {
+            var html = "<div class='keyWrapper-hc' id='kk'>" +
+                    "<span title='1' class='s1 mt12 ml9'>1</span>" +
+                    "<span title='2' class='s2 mt12'>2</span>" +
+                    "<span title='3' class='s3 mt12'>3</span>" +
+                    "<span title='4' class='s4 ml9'>4</span>" +
+                    "<span title='5' class='s5'>5</span>" +
+                    "<span title='6' class='s6'>6</span>" +
+                    "<span title='7' class='s7 ml9'>7</span>" +
+                    "<span title='8' class='s8'>8</span>" +
+                    "<span title='9' class='s9'>9</span>" +
+                    "<span title='-' class='s10 ml9'>-</span>" +
+                    "<span title='0' class='s0'>0</span>" +
+                    "<span id='del_hc' class='s11'>回删</span>" +
+                    "</div>";
+            //    var conf = {"dom":"id"} ;
+            //    var id = document.getElementsByTagName("input")[0].id;
+            //    pos和#kk的父容器为container
+            var pos = this.dom;
+                me.isF = true;
+            pos.bind("click",function(e) {
+                if(me.isF){
+                    pos.parent().append(html);
+                    me.isF = false;
+                    $("#kk").css({
+                        left:pos.position().left+"px",
+                        top:pos.position().top+pos.outerHeight(true)
+                    });
+
+                    $("#kk span").on("click", function (e) {
+                        if ($(this).attr("title")) {
+                            me.valArr.push($(this).attr("title"));
+                            console.log(me.valArr);
+                        }
+                        pos.val(me.valArr.join(''));
+                        e.stopPropagation();
+                    });
+
+                    $("#kk").bind('mousedown',function(){
+                        pos.unbind('blur');
+                    }).bind('mouseup',function(){
+                        pos.focus();
+                        pos.bind('blur',function(){
+                            $("#kk").remove();
+                            me.isF = true;
+                        });
+                    });
+
+                    $("#del_hc").bind("mousedown", function () {
+                        me.backDel(e);
+                        me.timer1 = setTimeout(function () {
+                            me.timer2 = setInterval(function () {
+                                me.backDel(e);
+                            },100);
+                        },1500);
+
+                        if (!pos.val()) {
+                            clearInterval(me.timer2);
+                        }
+                        e.stopPropagation();
+                    }).bind("mouseup", function (e) {
+                        clearInterval(me.timer1);
+                        clearInterval(me.timer2);
+                        e.stopPropagation();
+                    });
+                }
+
+            });
+
+            pos.parent().css("position","relative");
+            console.log("x:"+pos.position().left+"-----"+"Y:"+pos.position().top);
+            console.log("w:"+pos.width()+"-----"+"h:"+pos.height());
+        }
+    },
+    validateParam:function(conf) {
+        return true;
+    },
+    setValue:function() {
+    },
+    getValue:function(){
+    },
+    /**
+     *    获取光标的位置并向后删除，然后将光标的位置向前进1
+     *    @param event
+     */
+    backDel: function (e) {
+         console.log(e.target.selectionStart);
+         console.log(e.target.selectionEnd);
+        var sIndex = e.target.selectionStart;
+        var eIndex = e.target.selectionEnd;
+//         this.valArr.pop();
+//         this.dom.val(this.valArr.join(''));
+        if( sIndex === eIndex ){
+            this.valArr.splice(eIndex-1,1);
+            eIndex-=1;
+            console.log(this.valArr);
+            console.log(eIndex-=1);
+            this.dom.focus();
+            e.target.selectionEnd = eIndex;
+        }
+    }
+}
+</script>
+</html>

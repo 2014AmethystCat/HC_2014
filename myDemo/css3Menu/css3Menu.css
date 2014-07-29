@@ -1,0 +1,121 @@
+@charset "UTF-8";
+#nav {
+    /*定义菜单的外框样式*/
+    margin: 0;
+    padding: 7px 6px 0;
+    line-height: 100%; /*实现菜单项垂直居中*/
+    border-radius: 2em;
+    -webkit-border-radius: 2em;/*设计圆角边框*/
+    -moz-border-radius: 2em;
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.4);/*设计阴影效果*/
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,.4);
+    /*下面将为菜单外边框添加渐变背景效果*/
+    background: #8b8b8b;/*兼容不支持css3的浏览器*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#a9a9a9',endColorstr='#7a7a7a');/*兼容IE*/
+    background: -webkit-gradient(linear,left top,left bottom,from(#a9a9a9),to(#7a7a7a));
+    background: -moz-linear-gradient(#a9a9a9,#7a7a7a);
+    border: 1px solid #6d6d6d;
+}
+#nav li {/*定义子菜单列表项样式*/
+    margin: 0 5px;
+    padding: 0 0 8px;
+    float: left;/*实现水平并列显示*/
+    position: relative;/*定义包含块，以便绝对定位子元素*/
+    list-style: none;
+}
+/*主菜单链接样式：默认效果*/
+#nav a {
+    font-weight: bold;
+    color: #e7e5e5;
+    text-decoration: none;
+    display: block;
+    padding: 8px 20px;
+    margin: 0;
+    /*设计圆角及阴影效果*/
+    -webkit-border-radius: 1.6em;
+    -moz-border-radius: 1.6em;
+    text-shadow: 0 1px 1px rgba(0,0,0,.3);
+}
+/*子菜单项链接样式：鼠标经过时效果*/
+#nav ul li:hover a,#nav li:hover li a {
+    background: none;
+    border: none;
+    color: #666;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+#nav ul a:hover {
+    background: #0399d4 !important;/*兼容不支持css3的浏览器*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#04acec',endColorstr='#0186ba');/*兼容IE*/
+    background: -webkit-gradient(linear,left top,left bottom,from(#04acec),to(#0186ba));
+    background: -moz-linear-gradient(#a9a9a9,#7a7a7a) !important;
+    color: #fff !important;
+    -webkit-border-radius: 0;
+    -moz-border-radius: 0;
+    text-shadow: 0 1px 1px rgba(0,0,0,.1);
+}
+/*二级列表项样式*/
+#nav ul {
+    background: #ddd;/*兼容不支持css3的浏览器*/
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#fff',endColorstr='#cfcfcf');/*兼容IE*/
+    background: -webkit-gradient(linear,left top,left bottom,from(#fff),to(#cfcfcf));
+    background: -moz-linear-gradient(#fff,#cfcfcf);
+    display: none;
+    margin: 0;
+    padding: 0;
+    width: 185px;
+    position: absolute;/*通过绝对定位能更精确的控制菜单的显示位置*/
+    top: 35px;
+    left: 0;
+    border: solid 1px #b4b4b4;
+
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -webkit-box-shadow: 0 1px 3px rgba(0,0,0,.3);
+    -moz-box-shadow: 0 1px 3px rgba(0,0,0,.3);
+}
+/*定义鼠标经过时显示子菜单*/
+#nav li:hover > ul {
+    display: block;
+}
+#nav ul li {
+    float: none;
+    margin: 0;
+    padding: 0;
+}
+#nav ul li {
+    font-weight: normal;
+    text-shadow: 0 1px 1px rgba(255,255,255,.9);
+}
+/*三级菜单列表框样式*/
+#nav ul ul {
+    left: 181px;
+    top: -3px;
+}
+/*为第一个和最后一个子元素设置圆角效果*/
+#nav ul li:first-child > a {/*设置第一个元素的圆角效果*/
+    -webkit-border-top-left-radius: 9px;
+    -moz-border-radius-topleft: 9px;
+    -webkit-border-top-left-radius: 9px;
+    -webkit-border-top-right-radius: 9px;
+    -moz-border-radius-topright: 9px;
+}
+#nav ul li:last-child > a {/*设置最后一个子元素的圆角效果*/
+    -webkit-border-bottom-right-radius: 9px;
+    -moz-border-radius-bottomleft: 9px;
+    -webkit-border-bottom-left-radius: 9px;
+    -moz-border-radius-bottomright: 9px;
+}
+/*清楚固定高度，让菜单框自动张开包含说有子元素*/
+#nav:after {
+    content: ".";
+    display: block;
+    clear: both;
+    visibility: hidden;
+    line-height: 0;
+    height: 0;
+}
+#nav {display: inline-block;}
+html[xmls] #nav {display: block;}/*兼容IE7*/
+*html #nav {height: 1%;}/*兼容IE6*/

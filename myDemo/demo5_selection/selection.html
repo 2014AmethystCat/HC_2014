@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<p>请选中整行文字，或者只选中两三个 </p>
+<input type="button" value="获取文字" onclick="sele.getValue();"/>
+<input type="button" value="删除文字" onclick="sele.del()"/>
+<input type="button" value="取消选中" onclick="sele.cancel();"/>
+<script>
+    function Selected() {
+        var sele = document.selection;
+        var sele1 = document.getSelection();
+        this.getValue = function() {
+            alert(sele1?sele1:sele.createRange().text);
+        },
+        this.del = function() {
+            sele.clear();
+        },
+        this.cancel = function() {
+            sele.empty();
+        }
+    }
+    var sele = new Selected();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style type="text/css">
+        .keyWrapper {
+            width: 400px;
+            height: 250px;
+            background: url("images/key_bg.png") no-repeat center;
+            overflow: hidden;
+        }
+        .keyWrapper span {
+            /*background: red;*/
+            display: block;
+            float: left;
+            width: 120px;
+            height: 50px;
+            margin-top: 10px;
+            margin-left: 9px;
+            padding-right: 1px;
+            text-indent: -9999px;
+            cursor: pointer;
+        }
+        .keyWrapper span:hover {
+            background: deepskyblue;
+            opacity: 0.8;
+        }
+    </style>
+    <script src="js/jquery.min.js"></script>
+</head>
+<body>
+<div class="keyWrapper" id="kk">
+    <span title="1">1</span>
+    <span title="2">2</span>
+    <span title="3">3</span>
+    <span title="4">4</span>
+    <span title="5">5</span>
+    <span title="6">6</span>
+    <span title="7">7</span>
+    <span title="8">8</span>
+    <span title="9">9</span>
+    <span title=".">.</span>
+    <span title="0">0</span>
+    <span title="回删">回删</span>
+</div>
+<button id="a">点我</button>
+</body>
+<script>
+    var timer;
+    function aa() {
+        var a = 0;
+        a+=1;
+        console.log(a);
+    }
+    $("#a").bind("mousedown", function () {
+        aa();
+        timer = setInterval("aa()",200);
+    }).mouseup(function () {
+        clearInterval(timer);
+    });
+</script>
+</html>

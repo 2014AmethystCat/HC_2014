@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>setInterval</title>
+</head>
+<body>
+<button id="start">开始计时</button>
+<button id="end">停止</button>
+<button id="init">重置</button>
+<form name="f">
+    <input type="text" name="v" value="1"/>
+</form>
+</body>
+<script>
+    var s = document.getElementById("start"),
+        e = document.getElementById("end"),
+        i = document.getElementById("init"),
+            t;
+    s.onclick = function () {
+        t = setInterval(function () {
+            document.f.v.value = String (1+Number(document.f.v.value));
+        },1000);
+    };
+    e.onclick = function () {
+        clearInterval(t);
+    };
+    i.onclick = function () {
+        clearInterval(t);
+        document.f.v.value = 1;
+    };
+</script>
+</html>

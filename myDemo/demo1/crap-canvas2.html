@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>掷骰子2</title>
+    <style type="text/css">
+        canvas{
+            border: 2px #ff0000 solid;
+            background: seagreen;
+        }
+    </style>
+</head>
+<body>
+<canvas id="canvas" width="500" height="300">
+    your browser doesn't support html5.
+</canvas>
+<form action="" id="f">
+   stage: <input name="stage" value="投掷状态" type="text"/>
+    pv:<input name="pv" value="投掷点数" type="text"/>
+    outcome:<input name="outcome" value="投掷结果" type="text"/>
+    <input onclick="throwdice();" type="button" value="投骰子"/>
+</form>
+</body>
+<script>
+    //定义全局变量
+    var ctx,
+        cW = 500,
+        cH = 300,
+        diceX = 20,
+        diceY = 20,
+        diceW = 100,
+        diceH = 100,
+        dotrad = 6,
+        dX,dY;
+    function throwdice () {
+        var ch = 1 + Math.floor(Math.random()*6);
+        dX = diceX;
+        dY = diceY;
+        drowdice(ch);
+        ch = 1 + Math.floor(Math.random()*6);
+        dX = diceX + 150;
+        drowdice(ch);
+    }
+    function drowdice(n) {
+        ctx = document.getElementById("canvas").getContext("2d");
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 5;
+        ctx.clearRect(dX,dY,diceW,diceH);
+        ctx.strokeRect(dX,dY,diceW,diceH);
+        switch (n) {
+            case 1:
+                drow1();
+                break;
+            case 2:
+                drow2();
+                break;
+            case 3:
+                drow2();
+                drow1();
+                break;
+            case 4:
+                drow4();
+                break;
+            case 5:
+                drow4();
+                drow1();
+                break;
+            case 6:
+                drow4();
+                drow2mid();
+                break;
+        }
+    }
+    //骰点绘制函数
+    function drowdot(x,y) {
+       ctx.beginPath();
+       ctx.fillStyle = "#fff";
+       ctx.arc(x,y,dotrad,0,Math.PI*2,false);
+       ctx.fill();
+       ctx.closePath();
+    }
+    //模式1
+    function drow1() {
+        var dotX = dX + 0.5*diceW,
+            dotY = dY + 0.5*diceH;
+        drowdot(dotX,dotY);
+    }
+    //模式2
+    function drow2() {
+        var dotX = dX + 3*dotrad,
+            dotY = dY + 3*dotrad;
+        console.log(dotX+","+dotY);
+        drowdot(dotX,dotY);
+            dotX = dX + diceW - 3*dotrad;
+            dotY = dY + diceH - 3*dotrad;
+        drowdot(dotX,dotY);
+    }
+    //模式4
+    function drow4() {
+        drow2();
+        var dotX = dX + diceW - 3*dotrad,
+            dotY = dY + 3*dotrad;
+        drowdot(dotX,dotY);
+        var dotX = dX + 3*dotrad,
+            dotY = dY + diceH - 3*dotrad;
+        drowdot(dotX,dotY);
+    }
+    //模式6调用
+    function drow2mid() {
+        var dotX = dX + 3*dotrad,
+            dotY = dY + 0.5*diceH;
+        drowdot(dotX,dotY);
+            dotX = dX + diceW - 3*dotrad;
+            dotY = dY + 0.5*diceH;
+        drowdot(dotX,dotY);
+    }
+</script>
+</html>
